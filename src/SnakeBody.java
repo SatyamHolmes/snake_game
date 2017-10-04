@@ -1,77 +1,81 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.awt.Point;
 
 public class SnakeBody {
 	private int size=6;
 	private final int cellsize=20;
 	private final int xbegin=100;
 	private final int ybegin=100;
-	private ArrayList<Integer> xbodycoords;
-	private ArrayList<Integer> ybodycoords;
+	private ArrayList<Point> bodycoords;
+
 	private boolean snakedead;
 	
 	public SnakeBody(int size)
 	{
 		this.size=size;
 		snakedead=false;
-		xbodycoords=new ArrayList<Integer>(size);
-		ybodycoords=new ArrayList<Integer>(size);
+		bodycoords=new ArrayList<Point>(size);
 		
 		for(int i=0;i<size;i++)
 		{
-			xbodycoords.add(i,(xbegin+(i*cellsize)));
-			ybodycoords.add(i,ybegin);
+			bodycoords.add(i,new Point((xbegin+(i*cellsize)),ybegin));
 		}
 	}
 	
 	public SnakeBody()
 	{
 		snakedead=false;
-		xbodycoords=new ArrayList<Integer>(size);
-		ybodycoords=new ArrayList<Integer>(size);
+		bodycoords=new ArrayList<Point>(size);
 		
 		for(int i=0;i<size;i++)
 		{
-			try
-			{
-				xbodycoords.add(i,(xbegin+(i*cellsize)));
-				ybodycoords.add(i,ybegin);
-			}
-			catch(Exception e){}
+			bodycoords.add(i,new Point((xbegin+(i*cellsize)),ybegin));
 		}
 	}
 	
 	public int getxBodyCell(int i)
 	{
-		return xbodycoords.get(i);
+		return bodycoords.get(i).x;
 	}
 	
 	public int getyBodyCell(int i)
 	{
-		return ybodycoords.get(i);		
+		return bodycoords.get(i).y;		
 	}
 	
 	public void addBodyCell()
 	{
+		int x=bodycoords.get(size-1).x+20;
+		int y=bodycoords.get(size-1).y+20;
+		
+		bodycoords.add(new Point(x,y));
 		size++;
-		xbodycoords.add(xbodycoords.get(size-1)+20);
-		ybodycoords.add(ybodycoords.get(size-1)+20);
 	}
 	
-	public void changeBodyCell(int index,int xelem,int yelem)
+	public void changeBodyCell(int index,int xelem,int yelem,char ch)
 	{
 		if(index==0)
 		{
-			if(Collections.binarySearch(xbodycoords,xelem)>0 && Collections.binarySearch(ybodycoords,yelem)>0)
+			for(int i=1;i<size;i++)
+			{
+				if(bodycoords.get(i).x==xelem && bodycoords.get(i).y==yelem)
+				{
+					snakedead=true;
+					return;
+				}				
+			}
+			
+			if(xelem>470 || xelem<20 || yelem<20 || yelem>350)
 			{
 				snakedead=true;
 				return;
 			}
 		}
-		xbodycoords.set(index,xelem);
-		ybodycoords.set(index,yelem);
+		System.out.println("\n"+xelem+yelem);
+		bodycoords.set(index,new Point(xelem,yelem));
 	}
-	
+
 	public int bodySize()
 	{
 		return size;

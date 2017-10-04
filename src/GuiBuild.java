@@ -13,9 +13,12 @@ public class GuiBuild extends JPanel{
 	private SnakeMovement snakemove=new SnakeMovement();
 	private FeedSnake feed=new FeedSnake();
 	private final int movespeed=20;
-	private final int speed=500;
+	private final int speed=400;
 	private Point p1,p2;
+	private char ch;
 	private boolean start;
+	private int sc;
+	private String score;
 
 	public static void main(String[] arg)
 	{
@@ -25,7 +28,7 @@ public class GuiBuild extends JPanel{
 	
 	public GuiBuild()
 	{
-		frame.setSize(500,400);
+		frame.setSize(500,450);
 		frame.getContentPane().add(build);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -34,6 +37,9 @@ public class GuiBuild extends JPanel{
 		build.setFocusable(true);
 		build.requestFocusInWindow();
 		build.addKeyListener(snakemove);
+		sc=0;
+		score="0";
+		ch='a';
 		start=false;
 	}
 	
@@ -51,40 +57,58 @@ public class GuiBuild extends JPanel{
 
 			}
 		}
+		build.addKeyListener(null);
 		System.out.println("game ove");
 	}
 
-
+	
 	class SnakeBuilder extends JPanel
 	{
 		public void paintComponent(Graphics g)
 		{
-			Image img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/brown-background-18642-19114-hd-wallpapers.jpg").getImage();			
+			Image img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/back.png").getImage();			
 			g.drawImage(img,0,0,this);
 			img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/food.png").getImage();
 			g.drawImage(img,feed.foodloc.x,feed.foodloc.y,this);
+			switch(ch)
+			{
+				case 'a': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headleft.png").getImage(); break;
+				case 'd': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headright.png").getImage(); break;
+				case 'w': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headup.png").getImage(); break;
+				case 's': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headdown.png").getImage(); break;
+			}
+			g.drawImage(img,snake.getxBodyCell(0),snake.getyBodyCell(0),this);
 			img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/Snake-skin-texture.jpg").getImage();
-			for(int i=0;i< snake.bodySize();i++)
+			for(int i=1;i< snake.bodySize();i++)
 			{
 				g.drawImage(img,snake.getxBodyCell(i),snake.getyBodyCell(i),this);
 			}
+
+			img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/board.png").getImage();
+			g.drawImage(img,0,382,this);
+			//g.fillRect(0,380,500,450);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("TimesRoman",Font.BOLD,20));
+			g.drawString(score,250,400);
+			
+			if(snake.isDead())
+				g.drawString("Game Over",200,420);
+
 		}
 	}
 	
 	class SnakeMovement implements KeyListener
 	{
-		private LinkedList<Character> chlist=new LinkedList<Character>();
-		private char ch;
 		public void moveUp()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
-			snake.changeBodyCell(0,p1.x,p1.y-movespeed,'u');
+			snake.changeBodyCell(0,p1.x,p1.y-movespeed);
 			if(feed.hasEaten())
 				snake.addBodyCell();
 			for(int i=1;i<snake.bodySize();i++)
 			{
 				p2=new Point(snake.getxBodyCell(i),snake.getyBodyCell(i));
-				snake.changeBodyCell(i,p1.x,p1.y,'u');
+				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
 				build.repaint();
@@ -93,13 +117,13 @@ public class GuiBuild extends JPanel{
 		public void moveDown()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
-			snake.changeBodyCell(0,p1.x,p1.y+movespeed,'d');
+			snake.changeBodyCell(0,p1.x,p1.y+movespeed);
 			if(feed.hasEaten())
 				snake.addBodyCell();
 			for(int i=1;i<snake.bodySize();i++)
 			{
 				p2=new Point(snake.getxBodyCell(i),snake.getyBodyCell(i));
-				snake.changeBodyCell(i,p1.x,p1.y,'d');
+				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
 				build.repaint();
@@ -108,13 +132,13 @@ public class GuiBuild extends JPanel{
 		public void moveLeft()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
-			snake.changeBodyCell(0,p1.x-movespeed,p1.y,'l');
+			snake.changeBodyCell(0,p1.x-movespeed,p1.y);
 			if(feed.hasEaten())
 				snake.addBodyCell();
 			for(int i=1;i<snake.bodySize();i++)
 			{
 				p2=new Point(snake.getxBodyCell(i),snake.getyBodyCell(i));
-				snake.changeBodyCell(i,p1.x,p1.y,'l');
+				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
 				build.repaint();
@@ -123,13 +147,13 @@ public class GuiBuild extends JPanel{
 		public void moveRight()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
-			snake.changeBodyCell(0,p1.x+movespeed,p1.y,'r');
+			snake.changeBodyCell(0,p1.x+movespeed,p1.y);
 			if(feed.hasEaten())
 				snake.addBodyCell();
 			for(int i=1;i<snake.bodySize();i++)
 			{
 				p2=new Point(snake.getxBodyCell(i),snake.getyBodyCell(i));
-				snake.changeBodyCell(i,p1.x,p1.y,'r');
+				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
 				build.repaint();
@@ -177,7 +201,7 @@ public class GuiBuild extends JPanel{
 
 		public void foodGenerate()
 		{
-			foodloc=new Point(rand.nextInt(450),rand.nextInt(350));
+			foodloc=new Point(rand.nextInt(420)+20,rand.nextInt(320)+20);
 		}
 
 		public boolean hasEaten()
@@ -187,6 +211,8 @@ public class GuiBuild extends JPanel{
 			if((x<=(foodloc.x+20) && x>=(foodloc.x-20)) && (y<=(foodloc.y+20) && y>=(foodloc.y-20)))
 			{
 				foodGenerate();
+				sc++;
+				score=""+sc;
 				return true;
 			}
 			else

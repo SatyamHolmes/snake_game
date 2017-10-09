@@ -32,6 +32,7 @@ public class GuiBuild extends JPanel{
 		frame.getContentPane().add(build);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		build.setSize(500,400);
 		build.setLayout(null);
 		build.setFocusable(true);
@@ -66,25 +67,25 @@ public class GuiBuild extends JPanel{
 	{
 		public void paintComponent(Graphics g)
 		{
-			Image img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/back.png").getImage();			
+			Image img=new ImageIcon("../back.png").getImage();			
 			g.drawImage(img,0,0,this);
-			img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/food.png").getImage();
+			img=new ImageIcon("../food.png").getImage();
 			g.drawImage(img,feed.foodloc.x,feed.foodloc.y,this);
 			switch(ch)
 			{
-				case 'a': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headleft.png").getImage(); break;
-				case 'd': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headright.png").getImage(); break;
-				case 'w': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headup.png").getImage(); break;
-				case 's': img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/headdown.png").getImage(); break;
+				case 'a': img=new ImageIcon("../headleft.png").getImage(); break;
+				case 'd': img=new ImageIcon("../headright.png").getImage(); break;
+				case 'w': img=new ImageIcon("../headup.png").getImage(); break;
+				case 's': img=new ImageIcon("../headdown.png").getImage(); break;
 			}
 			g.drawImage(img,snake.getxBodyCell(0),snake.getyBodyCell(0),this);
-			img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/Snake-skin-texture.jpg").getImage();
+			img=new ImageIcon("../Snake-skin-texture.jpg").getImage();
 			for(int i=1;i< snake.bodySize();i++)
 			{
 				g.drawImage(img,snake.getxBodyCell(i),snake.getyBodyCell(i),this);
 			}
 
-			img=new ImageIcon("/home/satyamholmes/Desktop/Eclipse/Snake-game/board.png").getImage();
+			img=new ImageIcon("../board.png").getImage();
 			g.drawImage(img,0,382,this);
 			//g.fillRect(0,380,500,450);
 			g.setColor(Color.WHITE);

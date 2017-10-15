@@ -53,7 +53,7 @@ public class SnakeBody {
 		size++;
 	}
 	
-	public void changeBodyCell(int index,int xelem,int yelem,char ch)
+	public void changeBodyCell(int index,int xelem,int yelem)
 	{
 		if(index==0)
 		{

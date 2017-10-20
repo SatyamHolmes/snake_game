@@ -3,9 +3,9 @@ import java.util.Collections;
 import java.awt.Point;
 
 public class SnakeBody {
-	private int size=6;
-	private final int cellsize=20;
-	private final int xbegin=100;
+	private int size=5;
+	private final int cellsize=10;
+	private final int xbegin=300;
 	private final int ybegin=100;
 	private ArrayList<Point> bodycoords;
 
@@ -46,14 +46,14 @@ public class SnakeBody {
 	
 	public void addBodyCell()
 	{
-		int x=bodycoords.get(size-1).x+20;
-		int y=bodycoords.get(size-1).y+20;
+		int x=bodycoords.get(size-1).x+cellsize;
+		int y=bodycoords.get(size-1).y+cellsize;
 		
 		bodycoords.add(new Point(x,y));
 		size++;
 	}
 	
-	public void changeBodyCell(int index,int xelem,int yelem)
+	synchronized public void changeBodyCell(int index,int xelem,int yelem)
 	{
 		if(index==0)
 		{

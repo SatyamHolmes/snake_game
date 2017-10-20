@@ -12,8 +12,8 @@ public class GuiBuild extends JPanel{
 	private SnakeBody snake=new SnakeBody();
 	private SnakeMovement snakemove=new SnakeMovement();
 	private FeedSnake feed=new FeedSnake();
-	private final int movespeed=20;
-	private final int speed=400;
+	private final int movespeed=10;
+	private final int speed=100;
 	private Point p1,p2;
 	private char ch;
 	private boolean start;
@@ -71,6 +71,7 @@ public class GuiBuild extends JPanel{
 			g.drawImage(img,0,0,this);
 			img=new ImageIcon("../food.png").getImage();
 			g.drawImage(img,feed.foodloc.x,feed.foodloc.y,this);
+			/*
 			switch(ch)
 			{
 				case 'a': img=new ImageIcon("../headleft.png").getImage(); break;
@@ -78,15 +79,20 @@ public class GuiBuild extends JPanel{
 				case 'w': img=new ImageIcon("../headup.png").getImage(); break;
 				case 's': img=new ImageIcon("../headdown.png").getImage(); break;
 			}
+
 			g.drawImage(img,snake.getxBodyCell(0),snake.getyBodyCell(0),this);
-			img=new ImageIcon("../Snake-skin-texture.jpg").getImage();
+			*/
+			g.setColor(Color.BLUE);
+			g.fillOval(snake.getxBodyCell(0),snake.getyBodyCell(0),10,10);
+			//img=new ImageIcon("../Snake-skin-texture.jpg").getImage();
 			for(int i=1;i< snake.bodySize();i++)
 			{
-				g.drawImage(img,snake.getxBodyCell(i),snake.getyBodyCell(i),this);
+				//g.drawImage(img,snake.getxBodyCell(i),snake.getyBodyCell(i),this);
+				g.fillRect(snake.getxBodyCell(i),snake.getyBodyCell(i),10,10);
 			}
+
 			img=new ImageIcon("../board.png").getImage();
 			g.drawImage(img,0,382,this);
-			//g.fillRect(0,380,500,450);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("TimesRoman",Font.BOLD,20));
 			g.drawString(score,250,400);
@@ -99,7 +105,7 @@ public class GuiBuild extends JPanel{
 	
 	class SnakeMovement implements KeyListener
 	{
-		public void moveUp()
+		private void moveUp()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
 			snake.changeBodyCell(0,p1.x,p1.y-movespeed);
@@ -111,10 +117,9 @@ public class GuiBuild extends JPanel{
 				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
-				build.repaint();
 		}
 
-		public void moveDown()
+		private void moveDown()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
 			snake.changeBodyCell(0,p1.x,p1.y+movespeed);
@@ -126,10 +131,9 @@ public class GuiBuild extends JPanel{
 				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
-				build.repaint();
 		}
 
-		public void moveLeft()
+		private void moveLeft()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
 			snake.changeBodyCell(0,p1.x-movespeed,p1.y);
@@ -141,10 +145,9 @@ public class GuiBuild extends JPanel{
 				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
-				build.repaint();
 		}
 
-		public void moveRight()
+		private void moveRight()
 		{
 			p1=new Point(snake.getxBodyCell(0),snake.getyBodyCell(0));
 			snake.changeBodyCell(0,p1.x+movespeed,p1.y);
@@ -156,7 +159,6 @@ public class GuiBuild extends JPanel{
 				snake.changeBodyCell(i,p1.x,p1.y);
 				p1=p2;
 			}
-				build.repaint();
 		}
 
 		public void chooseDirection()
@@ -170,13 +172,14 @@ public class GuiBuild extends JPanel{
 				case 'd': moveRight(); break;
 				case 's': moveDown(); break;
 			}
+			build.repaint();
 		}
 
 		public void keyPressed(KeyEvent e)
 		{
 			start=true;
 			ch=e.getKeyChar();
-			chooseDirection();
+			//chooseDirection();
 		}
 
 		public void keyReleased(KeyEvent e)

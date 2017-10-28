@@ -19,6 +19,9 @@ public class GuiBuild extends JPanel{
 	private boolean start;
 	private int sc;
 	private String score;
+	private Image back;
+	private Image food;
+	private Image board;
 
 	public static void main(String[] arg)
 	{
@@ -28,6 +31,13 @@ public class GuiBuild extends JPanel{
 	
 	public GuiBuild()
 	{
+		back=new ImageIcon("../back.png").getImage();
+		food=new ImageIcon("../food.png").getImage();
+		board=new ImageIcon("../board.png").getImage();
+		sc=0;
+		score="0";
+		ch='a';
+		start=false;
 		frame.setSize(500,450);
 		frame.getContentPane().add(build);
 		frame.setLocationRelativeTo(null);
@@ -38,28 +48,35 @@ public class GuiBuild extends JPanel{
 		build.setFocusable(true);
 		build.requestFocusInWindow();
 		build.addKeyListener(snakemove);
-		sc=0;
-		score="0";
-		ch='a';
-		start=false;
 	}
 	
 	public void play()
 	{
-		while(!snake.isDead())
-		{
-			if(start)
-				snakemove.chooseDirection();
-			try{
-				Thread.sleep(speed);
+			try
+			{
+				Timer time=new Timer(200,new ActionListener(){
+					public void actionPerformed(ActionEvent a)
+					{
+						if(!snake.isDead())
+						{
+							if(start)
+								snakemove.chooseDirection();
+						}
+						else
+						{
+							build.removeKeyListener(snakemove);
+							((Timer)a.getSource()).stop();
+							System.out.println("game over");
+						}
+					}
+				});
+
+				time.start();
 			}
 			catch(Exception e)
 			{
-
+				e.printStackTrace();
 			}
-		}
-		build.removeKeyListener(snakemove);
-		System.out.println("game over");
 	}
 
 	
@@ -67,10 +84,8 @@ public class GuiBuild extends JPanel{
 	{
 		public void paintComponent(Graphics g)
 		{
-			Image img=new ImageIcon("../back.png").getImage();			
-			g.drawImage(img,0,0,this);
-			img=new ImageIcon("../food.png").getImage();
-			g.drawImage(img,feed.foodloc.x,feed.foodloc.y,this);
+			g.drawImage(back,0,0,this);
+			g.drawImage(food,feed.foodloc.x,feed.foodloc.y,this);
 			/*
 			switch(ch)
 			{
@@ -91,8 +106,7 @@ public class GuiBuild extends JPanel{
 				g.fillRect(snake.getxBodyCell(i),snake.getyBodyCell(i),10,10);
 			}
 
-			img=new ImageIcon("../board.png").getImage();
-			g.drawImage(img,0,382,this);
+			g.drawImage(board,0,382,this);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("TimesRoman",Font.BOLD,20));
 			g.drawString(score,250,400);

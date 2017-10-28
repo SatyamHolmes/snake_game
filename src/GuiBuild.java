@@ -54,7 +54,7 @@ public class GuiBuild extends JPanel{
 	{
 			try
 			{
-				Timer time=new Timer(200,new ActionListener(){
+				Timer time=new Timer(60,new ActionListener(){
 					public void actionPerformed(ActionEvent a)
 					{
 						if(!snake.isDead())
@@ -110,6 +110,8 @@ public class GuiBuild extends JPanel{
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("TimesRoman",Font.BOLD,20));
 			g.drawString(score,250,400);
+
+			Toolkit.getDefaultToolkit().sync();
 			
 			if(snake.isDead())
 				g.drawString("Game Over",200,420);
